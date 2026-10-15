@@ -30,6 +30,13 @@ async def test_help_명령어_목록():
         assert command in text
 
 
+async def test_help_커스텀_help_text_우선():
+    update = make_message_update("/help")
+    context = make_context(bot_data={"help_text": "/price - 시세 조회"})
+    await common.cmd_help(update, context)
+    assert _sent_text(update) == "/price - 시세 조회"
+
+
 async def test_id_chat_id_표시():
     update = make_message_update("/id", chat_id=777)
     await common.cmd_id(update, make_context())

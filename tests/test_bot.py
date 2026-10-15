@@ -15,6 +15,32 @@ def test_build_application_공통_핸들러_등록(config):
     assert len(application.error_handlers) == 1
 
 
+def test_build_application_help_text_저장(config):
+    application = build_application(config, help_text="/price - 시세")
+    assert application.bot_data["help_text"] == "/price - 시세"
+
+
+async def test_post_init_setup_teardown_호출(tmp_path):
+    from app.config import Config
+
+    config = Config(bot_token="123456:TEST-TOKEN", db_path=str(tmp_path / "bot.db"))
+    calls: list[str] = []
+
+    async def setup(application):
+        calls.append("setup")
+
+    async def teardown(application):
+        calls.append("teardown")
+
+    application = build_application(config, setup=setup, teardown=teardown)
+    await application.post_init(application)
+    assert calls == ["setup"]
+    assert "db" in application.bot_data
+
+    await application.post_shutdown(application)
+    assert calls == ["setup", "teardown"]
+
+
 def test_build_application_추가_핸들러_등록(config):
     from telegram.ext import CommandHandler
 

@@ -9,6 +9,13 @@ from telegram.ext import ContextTypes
 
 STARTED_AT_KEY = "started_at"
 
+DEFAULT_HELP = (
+    "/start - 인사말\n"
+    "/help - 명령어 목록\n"
+    "/status - 봇 상태\n"
+    "/id - 내 chat id 확인"
+)
+
 
 def format_uptime(seconds: float) -> str:
     seconds = int(seconds)
@@ -39,12 +46,8 @@ async def cmd_start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 async def cmd_help(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     if update.effective_message is None:
         return
-    await update.effective_message.reply_text(
-        "/start - 인사말\n"
-        "/help - 명령어 목록\n"
-        "/status - 봇 상태\n"
-        "/id - 내 chat id 확인"
-    )
+    help_text = context.bot_data.get("help_text") or DEFAULT_HELP
+    await update.effective_message.reply_text(help_text)
 
 
 async def cmd_status(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
