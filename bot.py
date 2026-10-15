@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import logging
 
+from dotenv import load_dotenv
 from telegram import Update
 
 from app.bot import build_application
@@ -14,6 +15,7 @@ from app.config import Config
 
 
 def main() -> None:
+    load_dotenv()
     config = Config.from_env()
     logging.basicConfig(
         level=config.log_level,
