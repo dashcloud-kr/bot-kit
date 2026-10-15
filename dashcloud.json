@@ -1,0 +1,9 @@
+{
+  "name": "bot-kit-example",
+  "runtime": "python312",
+  "entrypoint": "bot.py",
+  "env": {
+    "PYTHONUNBUFFERED": "1",
+    "TZ": "Asia/Seoul"
+  }
+}
